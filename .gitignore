@@ -1,0 +1,25 @@
+build
+*-output.log
+
+# Node / NPM / Yarn
+node_modules
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Configuration files
+*.env
+.env*
+
+# OS files
+.DS_Store
+
+# Solidity
+.node-xmlhttprequest-sync-*
+scTopics
+allFiredEvents
+in_complete_tests
+build/development
+local_*
+bindings.go
+types
