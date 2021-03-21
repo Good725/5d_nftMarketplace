@@ -5,9 +5,7 @@ const HDWalletProvider = require("truffle-hdwallet-provider");
 const { execSync } = require("child_process");
 
 const GWEI = 1000000000;
-const commitHash = execSync("git describe --always --long")
-    .toString()
-    .trim();
+const commitHash = execSync("git describe --always --long").toString().trim();
 
 if (
     (process.env.NETWORK || "").match(/localnet|devnet|testnet|main/) &&
@@ -25,7 +23,8 @@ const kovanNetwork = {
         ),
     network_id: 42,
     gas: 6721975,
-    gasPrice: 6.5 * GWEI
+    gasPrice: 6.5 * GWEI,
+    networkCheckTimeout: 10000,
 };
 
 const mainNetwork = {
@@ -38,7 +37,7 @@ const mainNetwork = {
     network_id: 1,
     gas: 8721975,
     gasPrice: 18 * GWEI,
-    networkCheckTimeout: 10000
+    networkCheckTimeout: 10000,
 };
 
 const ethRinkebyNetwork = {
@@ -51,7 +50,7 @@ const ethRinkebyNetwork = {
     network_id: 4,
     // gas: 6721975,
     // gasPrice: 6.5 * GWEI,
-    networkCheckTimeout: 10000
+    networkCheckTimeout: 10000,
 };
 
 module.exports = {
@@ -65,8 +64,8 @@ module.exports = {
         development: {
             host: "localhost",
             port: 8545,
-            network_id: "*"
-        }
+            network_id: "*",
+        },
     },
     mocha: {
         // // Use with `npm run test`, not with `npm run coverage`
@@ -77,7 +76,7 @@ module.exports = {
         // },
         enableTimeouts: false,
         useColors: true,
-        bail: false
+        bail: false,
     },
     compilers: {
         solc: {
@@ -86,14 +85,14 @@ module.exports = {
                 // evmVersion: "petersburg", // "istanbul",
                 optimizer: {
                     enabled: true,
-                    runs: 200
-                }
-            }
-        }
+                    runs: 200,
+                },
+            },
+        },
     },
     plugins: ["truffle-plugin-verify", "solidity-coverage"],
     api_keys: {
-        etherscan: process.env.ETHERSCAN_KEY
+        etherscan: process.env.ETHERSCAN_KEY,
     },
     verify: {
         preamble: `
@@ -106,10 +105,11 @@ Issues: https://github.com/renproject/darknode-sol/issues
 Licenses
 @openzeppelin/contracts: (MIT) https://github.com/OpenZeppelin/openzeppelin-contracts/blob/master/LICENSE
 darknode-sol: (GNU GPL V3) https://github.com/renproject/darknode-sol/blob/master/LICENSE
-`
+`,
     },
-    contracts_build_directory: `./build/${process.env.NETWORK ||
-        "development"}`,
+    contracts_build_directory: `./build/${
+        process.env.NETWORK || "development"
+    }`,
     // This is required by truffle to find any ts test files
-    test_file_extension_regexp: /.*\.ts$/
+    test_file_extension_regexp: /.*\.ts$/,
 };
