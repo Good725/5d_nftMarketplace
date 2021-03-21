@@ -6,7 +6,7 @@ const Redeem = artifacts.require("Redeem");
 const NFT = artifacts.require("NFT");
 const Token = artifacts.require("Token");
 
-module.exports = async function(deployer, network, accounts) {
+module.exports = async function(deployer) {
     await deployer.deploy(
         Token,
         "5D:JL1",

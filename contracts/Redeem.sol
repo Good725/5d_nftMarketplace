@@ -7,9 +7,9 @@ import "./NFT.sol";
 contract Redeem {
     using SafeMath for uint256;
 
-    Token token;
-    NFT nft;
-    uint256[] prices;
+    Token public token;
+    NFT public nft;
+    uint256[] public prices;
 
     constructor(
         Token token_,
@@ -39,5 +39,13 @@ contract Redeem {
 
     function redeem(uint256 id, uint256 amount) public {
         redeemWithData(id, amount, "");
+    }
+
+    function totalSupplies() public view returns (uint256[] memory) {
+        uint256[] memory balances = new uint256[](prices.length);
+        for (uint256 i = 0; i < balances.length; i++) {
+            balances[i] = nft.totalSupply(i);
+        }
+        return balances;
     }
 }
