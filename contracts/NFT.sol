@@ -18,18 +18,6 @@ contract NFT is Ownable, ERC721 {
         string[] memory uriArray
     ) Ownable() ERC721(name, symbol) {
         // ERC721._setBaseURI(uri);
-        _updateURIMap(uriArray);
-    }
-
-    function updateBaseURI(string memory baseURI) public onlyOwner {
-        ERC721._setBaseURI(baseURI);
-    }
-
-    function updateURIMap(string[] memory uriArray) public onlyOwner {
-        _updateURIMap(uriArray);
-    }
-
-    function _updateURIMap(string[] memory uriArray) internal {
         for (uint256 i = 0; i < uriArray.length; i++) {
             uriMap[i] = uriArray[i];
         }

@@ -1,12 +1,11 @@
 pragma solidity ^0.7.0;
 pragma experimental ABIEncoderV2;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "./Token.sol";
 import "./NFT.sol";
 
-contract Redeem is Ownable {
+contract Redeem {
     using SafeMath for uint256;
 
     Token public token;
@@ -17,18 +16,10 @@ contract Redeem is Ownable {
         Token token_,
         NFT nft_,
         uint256[] memory prices_
-    ) Ownable() {
+    ) {
         token = token_;
         nft = nft_;
         prices = prices_;
-    }
-
-    function updateBaseURI(string memory baseURI) public onlyOwner {
-        nft.updateBaseURI(baseURI);
-    }
-
-    function updateURIMap(string[] memory uriArray) public onlyOwner {
-        nft.updateURIMap(uriArray);
     }
 
     function redeemWithData(

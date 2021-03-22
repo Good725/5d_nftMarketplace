@@ -40,7 +40,7 @@ const mainNetwork = {
     networkCheckTimeout: 10000,
 };
 
-const ethRinkebyNetwork = {
+const rinkebyNetwork = {
     // @ts-ignore
     provider: () =>
         new HDWalletProvider(
@@ -55,12 +55,9 @@ const ethRinkebyNetwork = {
 
 module.exports = {
     networks: {
-        localnet: kovanNetwork,
-        devnet: kovanNetwork,
-        rinkebyDevnet: ethRinkebyNetwork,
-        testnet: kovanNetwork,
+        rinkeby: rinkebyNetwork,
+        kovan: kovanNetwork,
         mainnet: mainNetwork,
-        chaosnet: mainNetwork,
         development: {
             host: "localhost",
             port: 8545,

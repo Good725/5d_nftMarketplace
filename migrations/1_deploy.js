@@ -7,6 +7,7 @@ const NFT = artifacts.require("NFT");
 const Token = artifacts.require("Token");
 
 module.exports = async function (deployer, _networks, accounts) {
+    console.log(accounts[0]);
     await deployer.deploy(
         Token,
         "5D:JL1",
@@ -15,11 +16,16 @@ module.exports = async function (deployer, _networks, accounts) {
     );
     let token = await Token.at(Token.address);
 
-    await deployer.deploy(NFT, "MOONWALK", "MOONWALK", [
-        "phobos",
-        "europa",
-        "callisto",
-    ]);
+    await deployer.deploy(
+        NFT,
+        "Moonwalk by Jahan Loh - Fifth Dimension",
+        "MOONWALK",
+        [
+            "ipfs://QmZp4qZa2qYkcAiCnr3M24Gm9zKkdz5J7Xt1TLHMR2V3s4",
+            "ipfs://QmYiDBuWvmV1Rm3vdH2vees6kPMo8D6qt9N8fTDuhQVcxp",
+            "ipfs://QmThaeNiJMvU9fap2Lh3Etb1MbFEN1gqrScApnkHqMMump",
+        ]
+    );
     let nft = await NFT.at(NFT.address);
 
     await deployer.deploy(Redeem, token.address, nft.address, [
