@@ -44,6 +44,7 @@ contract Redeem {
         redeemWithData(id, amount, "");
     }
 
+    // Return the number of NFTs minted for each series.
     function totalSupplies() public view returns (uint256[] memory) {
         uint256[] memory balances = new uint256[](prices.length);
         for (uint256 i = 0; i < balances.length; i++) {

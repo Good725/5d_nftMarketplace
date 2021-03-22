@@ -23,6 +23,9 @@ contract NFT is Ownable, ERC721 {
         }
     }
 
+    // Combine the series ID and the token's position into a single token ID.
+    // For example, if the series ID is `0` and the token position is `10`,
+    // generate `100000010`.
     function encodeTokenId(uint256 seriesId, uint256 tokenPosition)
         public
         pure
@@ -31,6 +34,8 @@ contract NFT is Ownable, ERC721 {
         return (seriesId + 1) * tokenIdMultiplier + tokenPosition;
     }
 
+    // Extract the series ID from the tokenID. For example, `100000010` returns
+    // `0`.
     function extractSeriesId(uint256 tokenId) public pure returns (uint256) {
         return
             ((tokenId - (tokenId % tokenIdMultiplier)) / tokenIdMultiplier) - 1;
@@ -67,6 +72,7 @@ contract NFT is Ownable, ERC721 {
         return uriMap[seriesId];
     }
 
+    // Return a list of tokens owned by the passed-in address.
     function tokensOfOwner(address owner)
         external
         view
