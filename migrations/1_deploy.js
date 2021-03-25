@@ -16,16 +16,11 @@ module.exports = async function (deployer, _networks, accounts) {
     );
     let token = await Token.at(Token.address);
 
-    await deployer.deploy(
-        NFT,
-        "Moonwalk by Jahan Loh - Fifth Dimension",
-        "MOONWALK",
-        [
-            "ipfs://QmZp4qZa2qYkcAiCnr3M24Gm9zKkdz5J7Xt1TLHMR2V3s4",
-            "ipfs://QmYiDBuWvmV1Rm3vdH2vees6kPMo8D6qt9N8fTDuhQVcxp",
-            "ipfs://QmThaeNiJMvU9fap2Lh3Etb1MbFEN1gqrScApnkHqMMump",
-        ]
-    );
+    await deployer.deploy(NFT, "5TH DIMENSION", "5D", [
+        "ipfs://QmZp4qZa2qYkcAiCnr3M24Gm9zKkdz5J7Xt1TLHMR2V3s4",
+        "ipfs://QmYiDBuWvmV1Rm3vdH2vees6kPMo8D6qt9N8fTDuhQVcxp",
+        "ipfs://QmThaeNiJMvU9fap2Lh3Etb1MbFEN1gqrScApnkHqMMump",
+    ]);
     let nft = await NFT.at(NFT.address);
 
     await deployer.deploy(Redeem, token.address, nft.address, [
@@ -35,24 +30,24 @@ module.exports = async function (deployer, _networks, accounts) {
     ]);
     let redeem = await Redeem.at(Redeem.address);
 
-    await token.transferOwnership.sendTransaction(redeem.address);
-    await nft.transferOwnership.sendTransaction(redeem.address);
+    await token.initializeRedeemContract.sendTransaction(redeem.address);
+    await nft.initializeRedeemContract.sendTransaction(redeem.address);
 
-    // await redeem.redeem(0, 10);
-    // await redeem.redeem(1, 1);
-    // await redeem.redeem(2, 1);
-    // await redeem.redeem(0, 1);
+    await redeem.redeem(0, 10);
+    await redeem.redeem(1, 1);
+    await redeem.redeem(2, 1);
+    await redeem.redeem(0, 1);
 
-    // console.log(
-    //     (await nft.tokensOfOwner(accounts[0])).map((x) => x.toString())
-    // );
+    console.log(
+        (await nft.tokensOfOwner(accounts[0])).map((x) => x.toString())
+    );
 
-    // for (let i = 0; i < 4; i++) {
-    //     const mintedToken = await nft.tokenOfOwnerByIndex(accounts[0], i);
-    //     console.log("mintedToken", mintedToken.toString());
+    for (let i = 0; i < 4; i++) {
+        const mintedToken = await nft.tokenOfOwnerByIndex(accounts[0], i);
+        console.log("mintedToken", mintedToken.toString());
 
-    //     console.log(await nft.tokenURI(mintedToken));
-    // }
+        console.log(await nft.tokenURI(mintedToken));
+    }
 
     await token.transfer(
         "0x1693325f5E363C72553750967fDb5A1419d6A42d",

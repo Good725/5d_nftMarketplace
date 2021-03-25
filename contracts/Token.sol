@@ -4,6 +4,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract Token is Ownable, ERC20 {
+    address public redeemContract;
+
     constructor(
         string memory name,
         string memory symbol,
@@ -12,7 +14,16 @@ contract Token is Ownable, ERC20 {
         _mint(msg.sender, supply);
     }
 
-    function burn(address from, uint256 amount) public onlyOwner {
+    function initializeRedeemContract(address redeemContract_)
+        public
+        onlyOwner
+    {
+        require(redeemContract == address(0x0), "ALREADY_INITIALIZED");
+        redeemContract = redeemContract_;
+    }
+
+    function burn(address from, uint256 amount) public {
+        require(msg.sender == redeemContract, "NOT_REDEEM_CONTRACT");
         _burn(from, amount);
     }
 }

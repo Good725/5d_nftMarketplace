@@ -9,23 +9,31 @@ contract NFT is Ownable, ERC721 {
     using SafeMath for uint256;
 
     uint256 public constant tokenIdMultiplier = 100000000;
-    mapping(uint256 => uint256) public totalSupply;
+    mapping(uint256 => uint256) public seriesMinted;
     mapping(uint256 => string) public uriMap;
+    address public redeemContract;
 
     constructor(
         string memory name,
         string memory symbol,
         string[] memory uriArray
     ) Ownable() ERC721(name, symbol) {
-        // ERC721._setBaseURI(uri);
         for (uint256 i = 0; i < uriArray.length; i++) {
             uriMap[i] = uriArray[i];
         }
     }
 
+    function initializeRedeemContract(address redeemContract_)
+        public
+        onlyOwner
+    {
+        require(redeemContract == address(0x0), "ALREADY_INITIALIZED");
+        redeemContract = redeemContract_;
+    }
+
     // Combine the series ID and the token's position into a single token ID.
-    // For example, if the series ID is `0` and the token position is `10`,
-    // generate `100000010`.
+    // For example, if the series ID is `0` and the token position is `23`,
+    // generate `100000023`.
     function encodeTokenId(uint256 seriesId, uint256 tokenPosition)
         public
         pure
@@ -41,18 +49,15 @@ contract NFT is Ownable, ERC721 {
             ((tokenId - (tokenId % tokenIdMultiplier)) / tokenIdMultiplier) - 1;
     }
 
-    function mint(
-        address recipient,
-        uint256 seriesId,
-        bytes memory data
-    ) public onlyOwner {
-        uint256 tokenPosition = totalSupply[seriesId];
+    function mint(address recipient, uint256 seriesId) public {
+        require(msg.sender == redeemContract, "NOT_REDEEM_CONTRACT");
+        uint256 tokenPosition = seriesMinted[seriesId];
         require(tokenPosition < tokenIdMultiplier, "TOKEN_POSITION_TOO_LARGE");
         uint256 tokenID = encodeTokenId(seriesId, tokenPosition);
 
-        totalSupply[seriesId] = tokenPosition.add(1);
+        seriesMinted[seriesId] = tokenPosition.add(1);
 
-        return _safeMint(recipient, tokenID, data);
+        return _safeMint(recipient, tokenID);
     }
 
     function tokenURI(uint256 tokenId)

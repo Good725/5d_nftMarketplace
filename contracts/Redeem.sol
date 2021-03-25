@@ -22,11 +22,7 @@ contract Redeem {
         prices = prices_;
     }
 
-    function redeemWithData(
-        uint256 id,
-        uint256 amount,
-        bytes memory data
-    ) public {
+    function redeem(uint256 id, uint256 amount) public {
         require(id < prices.length, "INVALID_ID");
         require(amount > 0, "INVALID_AMOUNT");
 
@@ -36,19 +32,15 @@ contract Redeem {
         token.burn(msg.sender, cost);
 
         for (uint256 i = 0; i < amount; i++) {
-            nft.mint(msg.sender, id, data);
+            nft.mint(msg.sender, id);
         }
     }
 
-    function redeem(uint256 id, uint256 amount) public {
-        redeemWithData(id, amount, "");
-    }
-
     // Return the number of NFTs minted for each series.
-    function totalSupplies() public view returns (uint256[] memory) {
+    function seriesMinted() public view returns (uint256[] memory) {
         uint256[] memory balances = new uint256[](prices.length);
         for (uint256 i = 0; i < balances.length; i++) {
-            balances[i] = nft.totalSupply(i);
+            balances[i] = nft.seriesMinted(i);
         }
         return balances;
     }
