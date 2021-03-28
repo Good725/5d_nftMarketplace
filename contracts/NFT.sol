@@ -51,11 +51,11 @@ contract NFT is Ownable, ERC721 {
 
     function mint(address recipient, uint256 seriesId) public {
         require(msg.sender == redeemContract, "NOT_REDEEM_CONTRACT");
-        uint256 tokenPosition = seriesMinted[seriesId];
+        uint256 tokenPosition = seriesMinted[seriesId].add(1);
         require(tokenPosition < tokenIdMultiplier, "TOKEN_POSITION_TOO_LARGE");
         uint256 tokenID = encodeTokenId(seriesId, tokenPosition);
 
-        seriesMinted[seriesId] = tokenPosition.add(1);
+        seriesMinted[seriesId] = tokenPosition;
 
         return _safeMint(recipient, tokenID);
     }

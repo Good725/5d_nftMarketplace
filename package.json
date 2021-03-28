@@ -16,7 +16,8 @@
         "prepare-release": "npmignore"
     },
     "dependencies": {
-        "@openzeppelin/contracts": "^3.4.1"
+        "@openzeppelin/contracts": "^3.4.1",
+        "truffle-ledger-provider": "^1.0.3"
     },
     "devDependencies": {
         "@types/chai": "^4.2.15",

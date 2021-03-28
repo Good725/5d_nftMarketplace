@@ -14,6 +14,11 @@ if (
     throw new Error("Must set INFURA_KEY");
 }
 
+// const ledgerOptions = {
+//     networkId: 1, // ropsten testnet
+//     accountsOffset: 0, // we use the first address
+// };
+
 const kovanNetwork = {
     // @ts-ignore
     provider: () =>
@@ -30,6 +35,8 @@ const kovanNetwork = {
 const mainNetwork = {
     // @ts-ignore
     provider: () =>
+        // new LedgerWalletProvider(
+        //     ledgerOptions,
         new HDWalletProvider(
             process.env.MNEMONIC_MAINNET,
             `https://mainnet.infura.io/v3/${process.env.INFURA_KEY}`
